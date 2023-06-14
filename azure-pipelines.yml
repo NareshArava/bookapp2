@@ -18,10 +18,10 @@ stages:
       inputs:
         script: |
           images=(
-                    "gcr.io/owl-hadoop-cdh/owl-web:2023.05.1-ABDGCSHILM-258"
-                    "gcr.io/owl-hadoop-cdh/owl-agent:2023.05.1-ABDGCSHILM-258"
-                    "gcr.io/owl-hadoop-cdh/owl-livy:3.2.2-2023.05.1-ABDGCSHILM-258"
-                    "gcr.io/owl-hadoop-cdh/spark:3.2.2-2023.05.1-ABDGCSHILM-258"
+                    "gcr.io/owl-hadoop-cdh/owl-web:2023.05.1"
+                    "gcr.io/owl-hadoop-cdh/owl-agent:2023.05.1"
+                    "gcr.io/owl-hadoop-cdh/owl-livy:3.2.2-2023.05.1"
+                    "gcr.io/owl-hadoop-cdh/spark:3.2.2-2023.05.1"
                   )
                    for image in "${images[@]}"; do
                      echo "Pulling $image"
@@ -35,7 +35,7 @@ stages:
 
 
     - script: |
-          for image in "${images[@]}"; do
-           echo "Pulling $image"
+          for j in "${images[@]}"; do
+           echo "Pulling $j"
           done
       displayName: checking the image
