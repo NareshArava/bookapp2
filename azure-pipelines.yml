@@ -1,21 +1,33 @@
-# Ant
-# Build your Java projects and run tests with Apache Ant.
-# Add steps that save build artifacts and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/java
-
 trigger:
-- master
+  enabled: false
+stages:
+- stage: __default
+  jobs:
+  - job: Job
+    steps:
+    - task: CmdLine@2
+      displayName: 'Echo Steps'
+      inputs:
+        script: echo "Step - Docker Login, Docker Image Pull"
+    - task: Docker@2
+      displayName: 'Login to GCR Container Registry'
+      inputs:
+        command: login
+        containerRegistry: 'Collibra_DQ_OWL_Images_GCR'
+    - task: CmdLine@2
+      inputs:
+        script: |
+          images=(
+                    "gcr.io/owl-hadoop-cdh/owl-web:2023.05.1-ABDGCSHILM-258"
+                    "gcr.io/owl-hadoop-cdh/owl-agent:2023.05.1-ABDGCSHILM-258"
+                    "gcr.io/owl-hadoop-cdh/owl-livy:3.2.2-2023.05.1-ABDGCSHILM-258"
+                    "gcr.io/owl-hadoop-cdh/spark:3.2.2-2023.05.1-ABDGCSHILM-258"
+                  )
 
-pool:
-  vmImage: ubuntu-latest
-
-steps:
-- task: Ant@1
-  inputs:
-    workingDirectory: ''
-    buildFile: 'build.xml'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.8'
-    jdkArchitectureOption: 'x64'
-    publishJUnitResults: true
-    testResultsFiles: '**/TEST-*.xml'
+    - task: CmdLine@2
+      inputs:
+        script: |
+          for image in "${images[@]}" do
+            echo $image
+          done
+      displayName: checking the image
