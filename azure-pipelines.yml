@@ -1,5 +1,5 @@
 trigger:
-  enabled: false
+  - main
 stages:
 - stage: __default
   jobs:
