@@ -23,6 +23,10 @@ stages:
                     "gcr.io/owl-hadoop-cdh/owl-livy:3.2.2-2023.05.1-ABDGCSHILM-258"
                     "gcr.io/owl-hadoop-cdh/spark:3.2.2-2023.05.1-ABDGCSHILM-258"
                   )
+                   for image in "${images[@]}"; do
+                     echo "Pulling $image"
+                   done
+      displayName: checking
 
     - task: CmdLine@2
       inputs:
