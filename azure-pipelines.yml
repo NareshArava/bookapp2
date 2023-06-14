@@ -33,9 +33,8 @@ stages:
 
       displayName: checking
 
-    - task: CmdLine@2
-      inputs:
-        script: |
+
+    - script: |
           for image in "${images[@]}"; do
            echo "Pulling $image"
           done
