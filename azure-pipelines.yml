@@ -25,7 +25,8 @@ stages:
                   )
                    for image in "${images[@]}"; do
                      echo "Pulling $image"
-                    for i in "${!images[@]}"; do
+                   done
+                   for i in "${!images[@]}"; do
                       image[i]=$(echo "${image[i]}" | sed 's/gcr.io/khazeuscazurecrio/g')
                       echo "image tag $image"
                    done
