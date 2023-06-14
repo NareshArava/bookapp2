@@ -28,6 +28,6 @@ stages:
       inputs:
         script: |
           for image in "${images[@]}" do
-            echo $image
+            echo "Pulling $image"
           done
       displayName: checking the image
