@@ -27,7 +27,7 @@ stages:
     - task: CmdLine@2
       inputs:
         script: |
-          for image in "${images[@]}" do
-            echo "Pulling $image"
+          for image in "${images[@]}"; do
+           echo "Pulling $image"
           done
       displayName: checking the image
