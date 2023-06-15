@@ -43,13 +43,14 @@ stages:
           do
             #echo NameDockerImage:"$image"
             echo $image
-            docker pull $image
+            #docker pull $image
           done
 
     - script: |
         for i in "${!images[@]}"; do
          image[i]=$(echo "${image[i]}" | sed 's/naresh74/khazeuscazurecrio/g')
-         docker push "${image[@]}"
+         echo "$image[@]}"
+        # docker push "${image[@]}"
         done
         echo "${image[@]}"
       displayName: 
