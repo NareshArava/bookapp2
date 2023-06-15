@@ -38,7 +38,7 @@ stages:
       displayName: 'docker pulling the image'
       inputs:
         script: |
-          IFS=$'\n' read -d '' -r -a images <<< "$(echo "$myImages")"
+          IFS=$'\n' read -r -d '' -a images <<< "$myImages"
           for image in "${images[@]}"; 
           do
             #echo NameDockerImage:"$image"
