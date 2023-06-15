@@ -21,11 +21,11 @@ stages:
       displayName: 'pipeline for pulling the image'
 
 
-    - task: Docker@2
-      displayName: login to docker
-      inputs:
-        containerRegistry: 'dockerconnection'
-        command: 'login'
+   # - task: Docker@2
+    #  displayName: login to docker
+     # inputs:
+      #  containerRegistry: 'dockerconnection'
+       # command: 'login'
 
     - script: |
           images=(
@@ -63,5 +63,5 @@ stages:
            for i in "${!images[@]}"; do
             images[i]=$(echo "${images[i]}" | sed 's/naresh74/khazeuscazurecrio/g')
             echo "${images[@]}"
-            docker push "${images[@]}"
+            #docker push "${images[@]}"
            done
