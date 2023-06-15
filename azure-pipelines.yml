@@ -1,41 +1,66 @@
 trigger:
-  - main
+
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  myImages: |
+    naresh74/newaravaimage:latest
+    naresh74/newaravaimage:latest
+    naresh74/newaravaimage:latest
+    naresh74/newaravaimage:latest
+
 stages:
-- stage: __default
+- stage: STAGE_PULL_DOCKER_IMAGE
   jobs:
-  - job: Job
+  - job: PullImages
     steps:
-    - task: CmdLine@2
-      displayName: 'Echo Steps'
-      inputs:
-        script: echo "Step - Docker Login, Docker Image Pull"
-#    - task: Docker@2
- #     displayName: 'Login to GCR Container Registry'
-  #    inputs:
-   #     command: login
-    #    containerRegistry: 'Collibra_DQ_OWL_Images_GCR'
-    - task: CmdLine@2
-      inputs:
-        script: |
-          images=(
-                    "gcr.io/owl-hadoop-cdh/owl-web:2023.05.1"
-                    "gcr.io/owl-hadoop-cdh/owl-agent:2023.05.1"
-                    "gcr.io/owl-hadoop-cdh/owl-livy:3.2.2-2023.05.1"
-                    "gcr.io/owl-hadoop-cdh/spark:3.2.2-2023.05.1"
-                  )
-                   for image in "${images[@]}"; do
-                     echo "Pulling $image"
-                   done
-                   for i in "${!images[@]}"; do
-                      image[i]=$(echo "${image[i]}" | sed 's/gcr.io/khazeuscazurecrio/g')
-                      echo "image tag $image"
-                   done
+    - script: echo Steps for pipeline
+      displayName: 'pipeline for pulling the image'
 
-      displayName: checking
 
+    - task: Docker@2
+      displayName: login to docker
+      inputs:
+        containerRegistry: 'dockerconnection'
+        command: 'login'
 
     - script: |
-          for j in "${images[@]}"; do
-           echo "Pulling $j"
+          images=(
+                    "naresh74/newaravaimage:latest"
+                    "naresh74/newaravaimage:latest"
+                    "naresh74/newaravaimage:latest"
+                    "naresh74/newaravaimage:latest"
+                  )
+    - task: CmdLine@2
+      displayName: 'docker pulling the image'
+      inputs:
+        script: |
+          IFS=$'\n' read -d '' -r -a images <<< "$(echo "$myImages")"
+          for image in "${images[@]}"; 
+          do
+            #echo NameDockerImage:"$image"
+            echo $image
+            docker pull $image
           done
-      displayName: checking the image
+
+    - script: |
+        for i in "${!images[@]}"; do
+         image[i]=$(echo "${image[i]}" | sed 's/naresh74/khazeuscazurecrio/g')
+         docker push "${image[@]}"
+        done
+        echo "${image[@]}"
+      displayName: 
+
+
+    - task: CmdLine@2
+      displayName: 'Replace Container Registry'
+      inputs:
+        script: |
+           for i in "${!images[@]}"; do
+            images[i]=$(echo "${images[i]}" | sed 's/naresh74/khazeuscazurecrio/g')
+            echo "${images[@]}"
+            docker push "${images[@]}"
+           done
